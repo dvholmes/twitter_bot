@@ -65,7 +65,7 @@ def get_daily_quote(url):
     broswer = playwright_object.chromium.launch()
     
 
-    # create a new page in the browser that we can serach through
+    # create a new page in the browser that we can search through
     quote_page = broswer.new_page()
     quote_page.set_default_timeout(0)
 
@@ -73,7 +73,7 @@ def get_daily_quote(url):
     quote_page.goto(url)
     quote_of_day = ''
 
-   # repeat undi a quote under the proper length is found
+   # repeat until a quote under the proper length is found
     while(True):
         
          # find the button that generates a new qoute
