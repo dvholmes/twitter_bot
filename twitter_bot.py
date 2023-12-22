@@ -102,7 +102,9 @@ def actions():
 
 
     eleven_oclock = time(11,0,0)
-    three_oclock = time(23,0,0)
+    three_oclock = time(15,0,0)
+
+    sentTweet = False
    
 
     
@@ -114,6 +116,7 @@ def actions():
             tweet_text = f"Weather forecast for {desired_city}, {Country}: {Forecast_des}.\n "
             tweet_text += f"Low: {low_t}°F,\n High: {high_temp}°F."
             client_api.create_tweet(text=tweet_text)
+            sentTweet = True
         
 
         #tweet stock_predictions
@@ -129,6 +132,7 @@ def actions():
             tweet_content += f"Closing Price = {close_price}\n"
             tweet_content += f"Total Trades = {volume_total}"
             client_api.create_tweet(text=tweet_content)
+            sentTweet = True
 
         else:
             print("Unable to make a prediction due to an error.")
@@ -144,17 +148,22 @@ def actions():
             tweet_des = f"MLB Game of the Day ({todays_date}) : {Team1} vs {Team2}.\n"
             tweet_des += f" I predict {Winner} will win!!"
             client_api.create_tweet(text=tweet_des)
+            sentTweet = True
         
     else:
         print("run motivational quote")
         motivation_tweet = get_daily_quote(url_page)
         client_api.create_tweet(text=motivation_tweet)
         print("quote has been written", motivation_tweet)
+        sentTweet = True
 
-    # Call the function with your email addresses
-    from_email = os.getenv("sender_email")
-    to_email = os.getenv("reciver_email")
-    send_email(from_email, to_email)
+
+    # sent an email only if a tweet has been created.
+    if sentTweet is True:
+        # Call the function with your email addresses
+        from_email = os.getenv("sender_email")
+        to_email = os.getenv("reciver_email")
+        send_email(from_email, to_email)
 
 
 # run the logic for the bot
