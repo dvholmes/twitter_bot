@@ -9,6 +9,7 @@ from mlbpredictor.mlbprediction2 import mlbpredict
 from stockmarketPredictor.get_daily_stock import get_data
 from stockmarketPredictor.predict_stock_tommorrow import predict_prices
 
+
 from email.message import EmailMessage
 
 # load the credientials from the local .env file
@@ -24,6 +25,11 @@ access_sec = os.getenv("twitter_access_secret")
 stock_api_secret= os.getenv("stock_api_secret")
 
 client_api = tweepy.Client(bear_token,consumer_k,consumer_s,access_tok,access_sec)
+
+auth = tweepy.OAuthHandler(consumer_key=consumer_k, consumer_secret=consumer_s)
+auth.set_access_token(access_tok, access_sec)
+
+media_api = tweepy.API(auth)
 
 
 def send_email(sender_email, target_email):
@@ -102,7 +108,7 @@ def actions():
 
 
     eleven_oclock = time(11,0,0)
-    three_oclock = time(15,0,0)
+    three_oclock = time(17,0,0)
 
     sentTweet = False
    
@@ -149,6 +155,18 @@ def actions():
             tweet_des += f" I predict {Winner} will win!!"
             client_api.create_tweet(text=tweet_des)
             sentTweet = True
+
+    # run danny shout out.
+        shout_out = f"Check out this new album by Thee Danny Mason!!\n"
+        shout_out += f"Link: https://open.spotify.com/album/3lezbUEunmhxD6ny94VMnv?si=EgMrULBxSL63_i7CKaW5Iw\n"
+    # Upload the media and get the media_id_string
+        media_response = media_api.media_upload("images/albumimage.jpg")
+        media_id_str = media_response.media_id_string
+
+        # Create the tweet with the media_id_str
+        client_api.create_tweet(text=shout_out, media_ids=[media_id_str])
+
+        
         
     else:
         print("run motivational quote")
@@ -168,6 +186,7 @@ def actions():
 
 # run the logic for the bot
 actions()
+
 
 
 
