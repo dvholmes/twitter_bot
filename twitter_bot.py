@@ -107,14 +107,14 @@ def actions():
     todays_date = todays_date.strftime("%B %d")
 
 
-    eleven_oclock = time(11,0,0)
-    three_oclock = time(17,0,0)
+    tweleve_oclock = time(12,0,0)
+    three_oclock = time(16,0,0)
 
     sentTweet = False
    
 
     
-    if current_time < eleven_oclock:
+    if current_time < tweleve_oclock:
 
         # tweet a weather forecast of a random loaction
         desired_city, Country, Forecast_des, low_t, high_temp = weather_post()
@@ -145,7 +145,7 @@ def actions():
 
         
         
-    elif current_time >= eleven_oclock and  current_time < three_oclock:
+    elif current_time >= tweleve_oclock and  current_time < three_oclock:
         Team1, Team2, Winner = mlbpredict()
 
         #check if any games are being played today
@@ -154,7 +154,7 @@ def actions():
             tweet_des = f"MLB Game of the Day ({todays_date}) : {Team1} vs {Team2}.\n"
             tweet_des += f" I predict {Winner} will win!!"
             client_api.create_tweet(text=tweet_des)
-            sentTweet = True
+    
 
     # run danny shout out.
         shout_out = f"Check out this new album by Thee Danny Mason!!\n"
@@ -165,6 +165,7 @@ def actions():
 
         # Create the tweet with the media_id_str
         client_api.create_tweet(text=shout_out, media_ids=[media_id_str])
+        sentTweet = True
 
         
         
