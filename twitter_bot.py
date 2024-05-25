@@ -8,6 +8,7 @@ from accuweather import weather_post
 from mlbpredictor.mlbprediction2 import mlbpredict
 from stockmarketPredictor.get_daily_stock import get_data
 from stockmarketPredictor.predict_stock_tommorrow import predict_prices
+from memgenerator.memegen import getRandomMeme
 
 
 from email.message import EmailMessage
@@ -108,9 +109,11 @@ def actions():
 
 
     tweleve_oclock = time(12,0,0)
-    three_oclock = time(16,0,0)
+    three_oclock = time(15,0,0)
+    five_oclock = time(17,0,0)
 
     sentTweet = False
+    print(current_time)
    
 
     
@@ -156,19 +159,15 @@ def actions():
             client_api.create_tweet(text=tweet_des)
     
 
-    # run danny shout out.
-        shout_out = f"Check out this new album by Thee Danny Mason!!\n"
-        shout_out += f"Link: https://open.spotify.com/album/3lezbUEunmhxD6ny94VMnv?si=EgMrULBxSL63_i7CKaW5Iw\n"
-    # Upload the media and get the media_id_string
-        media_response = media_api.media_upload("images/albumimage.jpg")
-        media_id_str = media_response.media_id_string
-
-        # Create the tweet with the media_id_str
-        client_api.create_tweet(text=shout_out, media_ids=[media_id_str])
+    elif current_time >= three_oclock and  current_time < five_oclock:
+        random_title = ""
+        memefile = getRandomMeme()
+        med_response = media_api.media_upload(filename='dailymeme.jpg', file=memefile)
+        med_id_str = med_response.media_id_string
+        client_api.create_tweet(text=random_title,media_ids=[med_id_str])
         sentTweet = True
 
-        
-        
+
     else:
         print("run motivational quote")
         motivation_tweet = get_daily_quote(url_page)
@@ -187,10 +186,4 @@ def actions():
 
 # run the logic for the bot
 actions()
-
-
-
-
-
-
 
